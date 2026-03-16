@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto After October Crisis | Research Blog</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0e17;
+      --bg-secondary: #111827;
+      --bg-card: #1a2234;
+      --bg-elevated: #222d42;
+      --accent-primary: #00d4aa;
+      --accent-secondary: #0ea5e9;
+      --accent-warning: #f59e0b;
+      --accent-danger: #ef4444;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border-color: #2d3a4f;
+      --glow-color: rgba(0, 212, 170, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'IBM Plex Mono', monospace;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Background Grid Animation */
+    .grid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: 
+        linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    /* Floating orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb-1 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 212, 170, 0.3) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      animation: float1 25s ease-in-out infinite;
+    }
+
+    .orb-2 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, transparent 70%);
+      bottom: 10%;
+      left: -50px;
+      animation: float2 30s ease-in-out infinite;
+    }
+
+    .orb-3 {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+      top: 40%;
+      right: 20%;
+      animation: float3 20s ease-in-out infinite;
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(-50px, 50px) scale(1.1); }
+      66% { transform: translate(30px, -30px) scale(0.95); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(80px, -60px) scale(1.15); }
+    }
+
+    @keyframes float3 {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-40px, 40px); }
+      75% { transform: translate(40px, -20px); }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 30px var(--glow-color);
+      transform: translateY(-2px);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-primary) 0%, #00b894 100%);
+      color: var(--bg-primary);
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(0, 212, 170, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      font-weight: 500;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    /* Tags */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .tag-defi {
+      background: rgba(0, 212, 170, 0.15);
+      color: var(--accent-primary);
+    }
+
+    .tag-stablecoin {
+      background: rgba(14, 165, 233, 0.15);
+      color: var(--accent-secondary);
+    }
+
+    .tag-institutional {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-warning);
+    }
+
+    .tag-exchange {
+      background: rgba(168, 85, 247, 0.15);
+      color: #a855f7;
+    }
+
+    .tag-volatility {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--accent-danger);
+    }
+
+    /* Input fields */
+    .input-field {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+    }
+
+    .input-field::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Navigation */
+    .nav-link {
+      position: relative;
+      color: var(--text-secondary);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-primary);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 1rem;
+      right: 1rem;
+      height: 2px;
+      background: var(--accent-primary);
+      border-radius: 1px;
+    }
+
+    /* Page transitions */
+    .page {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .page.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger animations */
+    .stagger-item {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .stagger-item.visible {
+      animation: fadeInUp 0.5s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Metric cards */
+    .metric-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Chart bars */
+    .chart-bar {
+      transition: all 0.3s ease;
+      transform-origin: bottom;
+    }
+
+    .chart-bar:hover {
+      filter: brightness(1.2);
+    }
+
+    /* Search results */
+    .search-result {
+      border-left: 3px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .search-result:hover {
+      border-left-color: var(--accent-primary);
+      background: var(--bg-elevated);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      max-width: 800px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      z-index: 101;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-content.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Loading skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-elevated) 50%, var(--bg-secondary) 75%);
+      background-size: 200% 100%;
+      animation: skeleton 1.5s ease-in-out infinite;
+    }
+
+    @keyframes skeleton {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Pulse indicator */
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Focus states */
+    *:focus-visible {
+      outline: 2px solid var(--accent-primary);
+      outline-offset: 2px;
+    }
+
+    /* Trend line chart */
+    .trend-line {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: drawLine 2s ease forwards;
+    }
+
+    @keyframes drawLine {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Effects -->
+  <div class="grid-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-opacity-80 backdrop-blur-xl border-b border-[var(--border-color)]" style="background: rgba(10, 14, 23, 0.9);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="#" onclick="navigate('home'); return false;" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--accent-primary)] to-[var(--accent-secondary)] flex items-center justify-center">
+            <svg class="w-6 h-6 text-[var(--bg-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+          </div>
+          <div class="hidden sm:block">
+            <span class="font-display font-bold text-lg">CAOC</span>
+            <span class="text-[var(--text-muted)] text-xs block -mt-1">Research</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center gap-1">
+          <a href="#" onclick="navigate('home'); return false;" class="nav-link active" data-nav="home">Home</a>
+          <a href="#" onclick="navigate('papers'); return false;" class="nav-link" data-nav="papers">Research Papers</a>
+          <a href="#" onclick="navigate('blog'); return false;" class="nav-link" data-nav="blog">Blog</a>
+          <a href="#" onclick="navigate('insights'); return false;" class="nav-link" data-nav="insights">Market Insights</a>
+          <a href="#" onclick="navigate('about'); return false;" class="nav-link" data-nav="about">About</a>
+        </div>
+
+        <!-- Search & Actions -->
+        <div class="flex items-center gap-3">
+          <button onclick="openSearch()" class="p-2 rounded-lg hover:bg-[var(--bg-elevated)] transition-colors" aria-label="Search">
+            <svg class="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </button>
+          
+          <!-- Mobile menu button -->
+          <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg hover:bg-[var(--bg-elevated)] transition-colors" aria-label="Menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 bottom-0 w-64 bg-[var(--bg-secondary)] z-50 border-l border-[var(--border-color)] pt-20 px-4">
+    <div class="flex flex-col gap-2">
+      <a href="#" onclick="navigate('home'); toggleMobileMenu(); return false;" class="p-3 rounded-lg hover:bg-[var(--bg-elevated)] transition-colors">Home</a>
+      <a href="#" onclick="navigate('papers'); toggleMobileMenu(); return false;" class="p-3 rounded-lg hover:bg-[var(--bg-elevated)] transition-colors">Research Papers</a>
+      <a href="#" onclick="navigate('blog'); toggleMobileMenu(); return false;" class="p-3 rounded-lg hover:bg-[var(--bg-elevated)] transition-colors">Blog</a>
+      <a href="#" onclick="navigate('insights'); toggleMobileMenu(); return false;" class="p-3 rounded-lg hover:bg-[var(--bg-elevated)] transition-colors">Market Insights</a>
+      <a href="#" onclick="navigate('about'); toggleMobileMenu(); return false;" class="p-3 rounded-lg hover:bg-[var(--bg-elevated)] transition-colors">About</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="relative z-10 pt-16 min-h-screen">
+    
+    <!-- HOME PAGE -->
+    <div id="page-home" class="page active">
+      <!-- Hero Section -->
+      <section class="px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <div class="max-w-7xl mx-auto">
+          <div class="max-w-3xl stagger-item">
+            <div class="flex items-center gap-2 mb-6">
+              <div class="pulse-dot"></div>
+              <span class="text-[var(--accent-primary)] text-sm font-medium">Live Research Feed</span>
+            </div>
+            <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+              Crypto After<br>
+              <span class="text-[var(--accent-primary)]">October Crisis</span>
+            </h1>
+            <p class="text-[var(--text-secondary)] text-lg sm:text-xl leading-relaxed mb-8">
+              Independent research analyzing structural changes in cryptocurrency markets. 
+              Data-driven insights for traders and investors navigating the post-crash landscape.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <button onclick="navigate('papers')" class="btn-primary">
+                Explore Research
+              </button>
+              <button onclick="navigate('insights')" class="btn-secondary">
+                View Market Insights
+              </button>
+            </div>
+          </div>
+
+          <!-- Metrics Row -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-16 stagger-item" style="animation-delay: 0.2s;">
+            <div class="card p-6">
+              <div class="text-[var(--text-muted)] text-xs uppercase tracking-wider mb-2">Indexed Papers</div>
+              <div class="metric-value" data-count="247">0</div>
+              <div class="text-[var(--text-secondary)] text-sm mt-1">+12 this week</div>
+            </div>
+            <div class="card p-6">
+              <div class="text-[var(--text-muted)] text-xs uppercase tracking-wider mb-2">Research Sources</div>
+              <div class="metric-value" data-count="18">0</div>
+              <div class="text-[var(--text-secondary)] text-sm mt-1">Active feeds</div>
+            </div>
+            <div class="card p-6">
+              <div class="text-[var(--text-muted)] text-xs uppercase tracking-wider mb-2">Topics Tracked</div>
+              <div class="metric-value" data-count="34">0</div>
+              <div class="text-[var(--text-secondary)] text-sm mt-1">Across 5 sectors</div>
+            </div>
+            <div class="card p-6">
+              <div class="text-[var(--text-muted)] text-xs uppercase tracking-wider mb-2">AI Summaries</div>
+              <div class="metric-value" data-count="189">0</div>
+              <div class="text-[var(--text-secondary)] text-sm mt-1">Generated insights</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Research -->
+      <section class="px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-7xl mx-auto">
+          <div class="flex items-center justify-between mb-8">
+            <h2 class="font-display text-2xl font-bold">Featured Research</h2>
+            <a href="#" onclick="navigate('papers'); return false;" class="text-[var(--accent-primary)] text-sm hover:underline">
+              View all papers
+            </a>
+          </div>
+          <div id="featuredResearch" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Latest Articles -->
+      <section class="px-4 sm:px-6 lg:px-8 py-12 bg-[var(--bg-secondary)] bg-opacity-50">
+        <div class="max-w-7xl mx-auto">
+          <div class="flex items-center justify-between mb-8">
+            <h2 class="font-display text-2xl font-bold">Latest Analysis</h2>
+            <a href="#" onclick="navigate('blog'); return false;" class="text-[var(--accent-primary)] text-sm hover:underline">
+              All articles
+            </a>
+          </div>
+          <div id="latestArticles" class="grid md:grid-cols-2 gap-6">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Trending Topics -->
+      <section class="px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-7xl mx-auto">
+          <h2 class="font-display text-2xl font-bold mb-8">Trending Research Topics</h2>
+          <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Topic Cloud -->
+            <div class="card p-6">
+              <h3 class="text-sm text-[var(--text-muted)] uppercase tracking-wider mb-4">Topic Clusters</h3>
+              <div id="topicCloud" class="flex flex-wrap gap-3">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+            <!-- Mini Chart -->
+            <div class="card p-6">
+              <h3 class="text-sm text-[var(--text-muted)] uppercase tracking-wider mb-4">Research Volume (30 days)</h3>
+              <div id="volumeChart" class="h-40 flex items-end gap-1">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- RESEARCH PAPERS PAGE -->
+    <div id="page-papers" class="page">
+      <section class="px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-7xl mx-auto">
+          <h1 class="font-display text-3xl sm:text-4xl font-bold mb-4">Research Papers</h1>
+          <p class="text-[var(--text-secondary)] mb-8 max-w-2xl">
+            Semantic search across 247+ research reports from Messari, Glassnode, Chainalysis, Dune Analytics, and Nansen.
+          </p>
+
+          <!-- Search & Filters -->
+          <div class="card p-6 mb-8">
+            <div class="flex flex-col lg:flex-row gap-4">
+              <div class="flex-1 relative">
+                <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <input type="text" id="paperSearch" class="input-field pl-12" placeholder="Search by meaning: 'institutional behavior after crypto crash'">
+              </div>
+              <div class="flex flex-wrap gap-3">
+                <select id="filterSource" class="input-field w-auto">
+                  <option value="">All Sources</option>
+                  <option value="Messari">Messari</option>
+                  <option value="Glassnode">Glassnode</option>
+                  <option value="Chainalysis">Chainalysis</option>
+                  <option value="Dune">Dune Analytics</option>
+                  <option value="Nansen">Nansen</option>
+                </select>
+                <select id="filterTopic" class="input-field w-auto">
+                  <option value="">All Topics</option>
+                  <option value="DeFi">DeFi</option>
+                  <option value="Stablecoins">Stablecoins</option>
+                  <option value="Institutional">Institutional</option>
+                  <option value="Exchanges">Exchanges</option>
+                  <option value="Volatility">Volatility</option>
+                </select>
+                <select id="filterDate" class="input-field w-auto">
+                  <option value="">All Time</option>
+                  <option value="7">Last 7 days</option>
+                  <option value="30">Last 30 days</option>
+                  <option value="90">Last 90 days</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Results -->
+          <div id="paperResults" class="space-y-4">
+            <!-- Populated by JS -->
+          </div>
+
+          <div id="noResults" class="hidden text-center py-16">
+            <svg class="w-16 h-16 text-[var(--text-muted)] mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-[var(--text-secondary)]">No research papers match your search criteria.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- BLOG PAGE -->
+    <div id="page-blog" class="page">
+      <section class="px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-7xl mx-auto">
+          <h1 class="font-display text-3xl sm:text-4xl font-bold mb-4">Analysis & Insights</h1>
+          <p class="text-[var(--text-secondary)] mb-8 max-w-2xl">
+            In-depth analysis of post-crisis market dynamics, research reviews, and data-driven insights.
+          </p>
+
+          <!-- Category Tabs -->
+          <div class="flex flex-wrap gap-2 mb-8">
+            <button class="category-tab btn-primary text-sm" data-category="all">All Posts</button>
+            <button class="category-tab btn-secondary text-sm" data-category="analysis">Market Analysis</button>
+            <button class="category-tab btn-secondary text-sm" data-category="review">Research Reviews</button>
+            <button class="category-tab btn-secondary text-sm" data-category="data">Data Insights</button>
+          </div>
+
+          <!-- Articles Grid -->
+          <div id="blogGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- MARKET INSIGHTS PAGE -->
+    <div id="page-insights" class="page">
+      <section class="px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-7xl mx-auto">
+          <h1 class="font-display text-3xl sm:text-4xl font-bold mb-4">Market Insights Dashboard</h1>
+          <p class="text-[var(--text-secondary)] mb-8 max-w-2xl">
+            Real-time analysis of research trends and emerging themes in cryptocurrency markets.
+          </p>
+
+          <!-- Dashboard Grid -->
+          <div class="grid lg:grid-cols-3 gap-6 mb-8">
+            <!-- Trend Overview -->
+            <div class="lg:col-span-2 card p-6">
+              <h3 class="text-sm text-[var(--text-muted)] uppercase tracking-wider mb-4">Topic Growth Trends</h3>
+              <div id="trendChart" class="h-64">
+                <svg viewBox="0 0 600 200" class="w-full h-full">
+                  <!-- Grid lines -->
+                  <g stroke="rgba(45, 58, 79, 0.5)" stroke-width="1">
+                    <line x1="50" y1="20" x2="50" y2="180"/>
+                    <line x1="50" y1="180" x2="580" y2="180"/>
+                    <line x1="50" y1="100" x2="580" y2="100" stroke-dasharray="4"/>
+                    <line x1="50" y1="60" x2="580" y2="60" stroke-dasharray="4"/>
+                    <line x1="50" y1="140" x2="580" y2="140" stroke-dasharray="4"/>
+                  </g>
+                  <!-- Lines -->
+                  <path class="trend-line" d="M50,150 Q150,140 200,120 T350,90 T500,70 T580,50" fill="none" stroke="var(--accent-primary)" stroke-width="3"/>
+                  <path class="trend-line" d="M50,160 Q150,155 200,150 T350,130 T500,100 T580,80" fill="none" stroke="var(--accent-secondary)" stroke-width="2" style="animation-delay: 0.3s;"/>
+                  <path class="trend-line" d="M50,170 Q150,165 200,160 T350,155 T500,140 T580,130" fill="none" stroke="var(--accent-warning)" stroke-width="2" style="animation-delay: 0.6s;"/>
+                  <!-- Labels -->
+                  <text x="50" y="195" fill="var(--text-muted)" font-size="10">Oct</text>
+                  <text x="200" y="195" fill="var(--text-muted)" font-size="10">Nov</text>
+                  <text x="350" y="195" fill="var(--text-muted)" font-size="10">Dec</text>
+                  <text x="500" y="195" fill="var(--text-muted)" font-size="10">Jan</text>
+                </svg>
+              </div>
+              <div class="flex gap-6 mt-4">
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-[var(--accent-primary)]"></div>
+                  <span class="text-sm text-[var(--text-secondary)]">DeFi Recovery</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-[var(--accent-secondary)]"></div>
+                  <span class="text-sm text-[var(--text-secondary)]">Stablecoin Flows</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-[var(--accent-warning)]"></div>
+                  <span class="text-sm text-[var(--text-secondary)]">Institutional Activity</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sector Breakdown -->
+            <div class="card p-6">
+              <h3 class="text-sm text-[var(--text-muted)] uppercase tracking-wider mb-4">Research by Sector</h3>
+              <div id="sectorChart" class="space-y-4">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Detected Trends -->
+          <div class="card p-6 mb-8">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm text-[var(--text-muted)] uppercase tracking-wider">AI-Detected Emerging Trends</h3>
+              <span class="flex items-center gap-2 text-xs text-[var(--accent-primary)]">
+                <div class="pulse-dot"></div>
+                Live Analysis
+              </span>
+            </div>
+            <div id="detectedTrends" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Recent Insights -->
+          <h3 class="font-display text-xl font-bold mb-4">Recent Data Insights</h3>
+          <div id="recentInsights" class="grid md:grid-cols-2 gap-6">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div id="page-about" class="page">
+      <section class="px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-3xl mx-auto">
+          <h1 class="font-display text-3xl sm:text-4xl font-bold mb-8">About This Research</h1>
+          
+          <div class="card p-8 mb-8">
+            <div class="flex items-start gap-6 mb-6">
+              <div class="w-20 h-20 rounded-xl bg-gradient-to-br from-[var(--accent-primary)] to-[var(--accent-secondary)] flex items-center justify-center flex-shrink-0">
+                <svg class="w-10 h-10 text-[var(--bg-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="font-display text-xl font-bold mb-2">Research Focus</h2>
+                <p class="text-[var(--text-secondary)]">
+                  This blog provides independent analysis of cryptocurrency market structural changes following the October crisis. 
+                  Focus areas include liquidity dynamics, institutional behavior shifts, DeFi recovery patterns, and capital flow analysis.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="prose prose-invert max-w-none">
+            <div class="card p-6 mb-6">
+              <h3 class="font-display text-lg font-bold mb-4">Methodology</h3>
+              <ul class="space-y-3 text-[var(--text-secondary)]">
+                <li class="flex items-start gap-3">
+                  <svg class="w-5 h-5 text-[var(--accent-primary)] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span>Semantic search and indexing of research from Messari, Glassnode, Chainalysis, Dune, and Nansen</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <svg class="w-5 h-5 text-[var(--accent-primary)] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span>AI-powered summarization and trend detection across indexed research</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <svg class="w-5 h-5 text-[var(--accent-primary)] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span>On-chain data analysis from multiple blockchain analytics platforms</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <svg class="w-5 h-5 text-[var(--accent-primary)] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span>Cross-referenced citations and transparent data sourcing</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card p-6 mb-6">
+              <h3 class="font-display text-lg font-bold mb-4">Target Audience</h3>
+              <p class="text-[var(--text-secondary)] mb-4">
+                This research is designed for:
+              </p>
+              <div class="grid sm:grid-cols-3 gap-4">
+                <div class="bg-[var(--bg-secondary)] rounded-lg p-4 text-center">
+                  <svg class="w-8 h-8 text-[var(--accent-primary)] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                  </svg>
+                  <div class="font-medium">Crypto Traders</div>
+                </div>
+                <div class="bg-[var(--bg-secondary)] rounded-lg p-4 text-center">
+                  <svg class="w-8 h-8 text-[var(--accent-secondary)] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  <div class="font-medium">Investors</div>
+                </div>
+                <div class="bg-[var(--bg-secondary)] rounded-lg p-4 text-center">
+                  <svg class="w-8 h-8 text-[var(--accent-warning)] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  <div class="font-medium">Analysts</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card p-6">
+              <h3 class="font-display text-lg font-bold mb-4">Data Sources</h3>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="flex items-center gap-3 p-3 bg-[var(--bg-secondary)] rounded-lg">
+                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center font-bold text-sm">M</div>
+                  <div>
+                    <div class="font-medium">Messari</div>
+                    <div class="text-xs text-[var(--text-muted)]">Market Intelligence</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-[var(--bg-secondary)] rounded-lg">
+                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center font-bold text-sm">G</div>
+                  <div>
+                    <div class="font-medium">Glassnode</div>
+                    <div class="text-xs text-[var(--text-muted)]">On-Chain Analytics</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-[var(--bg-secondary)] rounded-lg">
+                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center font-bold text-sm">C</div>
+                  <div>
+                    <div class="font-medium">Chainalysis</div>
+                    <div class="text-xs text-[var(--text-muted)]">Blockchain Analysis</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-[var(--bg-secondary)] rounded-lg">
+                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center font-bold text-sm">D</div>
+                  <div>
+                    <div class="font-medium">Dune Analytics</div>
+                    <div class="text-xs text-[var(--text-muted)]">SQL Analytics</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Search Modal -->
+  <div id="searchOverlay" class="modal-overlay" onclick="closeSearch()"></div>
+  <div id="searchModal" class="modal-content p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="font-display text-xl font-bold">Semantic Search</h2>
+      <button onclick="closeSearch()" class="p-2 hover:bg-[var(--bg-elevated)] rounded-lg transition-colors" aria-label="Close search">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <input type="text" id="globalSearch" class="input-field mb-4" placeholder="Try: 'institutional behavior after crypto crash'">
+    <div id="searchResults" class="space-y-2 max-h-80 overflow-y-auto">
+      <p class="text-[var(--text-muted)] text-sm py-8 text-center">Enter a search query to find relevant research</p>
+    </div>
+  </div>
+
+  <!-- Paper Detail Modal -->
+  <div id="paperOverlay" class="modal-overlay" onclick="closePaperModal()"></div>
+  <div id="paperModal" class="modal-content">
+    <div id="paperModalContent" class="p-6">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- Article Detail Modal -->
+  <div id="articleOverlay" class="modal-overlay" onclick="closeArticleModal()"></div>
+  <div id="articleModal" class="modal-content">
+    <div id="articleModalContent" class="p-6">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-[var(--border-color)] mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent-primary)] to-[var(--accent-secondary)] flex items-center justify-center">
+            <svg class="w-4 h-4 text-[var(--bg-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+          </div>
+          <span class="font-display font-bold">Crypto After October Crisis</span>
+        </div>
+        <p class="text-[var(--text-muted)] text-sm">
+          Independent research for crypto traders and investors
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ============================================
+    // DATA STORE (Simulated Database)
+    // ============================================
+
+    const researchPapers = [
+      {
+        id: 1,
+        title: "DeFi Liquidity Crisis: A Post-Mortem Analysis",
+        author: "Research Team",
+        source: "Messari",
+        date: "2024-01-15",
+        summary: "Comprehensive analysis of liquidity drainage across major DeFi protocols following the October crisis. Examines TVL changes, liquidity provider behavior, and recovery patterns across lending and DEX platforms.",
+        keyMetrics: ["TVL", "Liquidity Depth", "Slippage", "Protocol Revenue"],
+        tags: ["DeFi", "Liquidity"],
+        topics: ["DeFi"],
+        thesis: "DeFi protocols with diversified liquidity sources showed 3x faster recovery than single-source protocols.",
+        implications: "Protocols should implement emergency liquidity reserves and cross-protocol liquidity sharing mechanisms."
+      },
+      {
+        id: 2,
+        title: "Stablecoin Flows During Market Stress",
+        author: "On-Chain Analytics Team",
+        source: "Glassnode",
+        date: "2024-01-12",
+        summary: "Analysis of stablecoin mint/burn patterns and exchange flows during the October crisis. Identifies key patterns in capital preservation and flight-to-safety behaviors.",
+        keyMetrics: ["Exchange Inflows", "Mint/Burn Rate", "Stablecoin Dominance", "Chain Migration"],
+        tags: ["Stablecoins", "Capital Flows"],
+        topics: ["Stablecoins"],
+        thesis: "USDT and USDC saw divergent flow patterns, with USDT absorbing more flight-to-safety volume.",
+        implications: "Stablecoin composition matters for exchange liquidity during market stress events."
+      },
+      {
+        id: 3,
+        title: "Institutional Crypto Holdings: Q4 Rebalancing",
+        author: "Institutional Research",
+        source: "Chainalysis",
+        date: "2024-01-10",
+        summary: "Examines changes in institutional crypto allocations following October events. Includes analysis of custody movements, OTC desk activity, and fund redemption patterns.",
+        keyMetrics: ["Institutional Holdings", "OTC Volume", "Custody Flows", "Fund AUM"],
+        tags: ["Institutional", "Capital Flows"],
+        topics: ["Institutional"],
+        thesis: "Institutional investors showed varied responses with 40% reducing exposure while 25% increased positions.",
+        implications: "Institutional sentiment divergence creates potential for significant volatility on recovery."
+      },
+      {
+        id: 4,
+        title: "Exchange Reserve Dynamics Post-Crisis",
+        author: "Market Intelligence Unit",
+        source: "Nansen",
+        date: "2024-01-08",
+        summary: "Deep dive into exchange balance changes, identifying which platforms saw largest outflows and what this means for market liquidity. Includes smart money wallet tracking.",
+        keyMetrics: ["Exchange Reserves", "Net Flows", "Smart Money Movements", "Withdrawal Patterns"],
+        tags: ["Exchanges", "Liquidity"],
+        topics: ["Exchanges"],
+        thesis: "Exchange reserves dropped to 18-month lows, potentially limiting sell-side liquidity.",
+        implications: "Lower exchange reserves may amplify price movements on renewed buying pressure."
+      },
+      {
+        id: 5,
+        title: "Volatility Regime Analysis: October Aftermath",
+        author: "Quantitative Research",
+        source: "Glassnode",
+        date: "2024-01-05",
+        summary: "Statistical analysis of volatility patterns before, during, and after the October crisis. Identifies regime changes and mean reversion patterns.",
+        keyMetrics: ["Realized Volatility", "Implied Volatility", "Volatility Skew", "Variance Swaps"],
+        tags: ["Volatility", "Market Dynamics"],
+        topics: ["Volatility"],
+        thesis: "Volatility regime shifted from mean-reverting to trending, with slower decay in elevated levels.",
+        implications: "Option pricing models may need recalibration for post-crisis environment."
+      },
+      {
+        id: 6,
+        title: "Cross-Chain Capital Migration Patterns",
+        author: "DeFi Research Team",
+        source: "Dune",
+        date: "2024-01-03",
+        summary: "Analysis of how capital moved between L1 and L2 ecosystems during the crisis. Examines bridge usage, gas cost impacts, and user migration patterns.",
+        keyMetrics: ["Bridge Volume", "Chain TVL Distribution", "Gas Costs", "User Addresses"],
+        tags: ["DeFi", "Cross-Chain"],
+        topics: ["DeFi"],
+        thesis: "L2 ecosystems captured 35% of migrating capital, showing increased L2 adoption.",
+        implications: "Cross-chain liquidity fragmentation creates arbitrage opportunities but systemic risks."
+      },
+      {
+        id: 7,
+        title: "Smart Money Wallet Behavior Analysis",
+        author: "Analytics Team",
+        source: "Nansen",
+        date: "2024-01-01",
+        summary: "Tracks labeled smart money wallets through the October crisis, identifying accumulation and distribution patterns.",
+        keyMetrics: ["Smart Money Holdings", "Transaction Patterns", "Profit Taking", "Accumulation"],
+        tags: ["Trading", "On-Chain"],
+        topics: ["Institutional"],
+        thesis: "Smart money wallets accumulated during the crash, suggesting belief in recovery.",
+        implications: "Following smart money accumulation patterns may provide alpha for traders."
+      },
+      {
+        id: 8,
+        title: "Lending Protocol Health Assessment",
+        author: "Risk Research Unit",
+        source: "Messari",
+        date: "2023-12-28",
+        summary: "Evaluates the health of major lending protocols through the crisis, examining liquidation cascades, bad debt accumulation, and recovery trajectories.",
+        keyMetrics: ["Bad Debt", "Liquidation Volume", "Collateral Ratios", "Utilization Rates"],
+        tags: ["DeFi", "Lending"],
+        topics: ["DeFi"],
+        thesis: "Lending protocols with dynamic collateral factors avoided significant bad debt accumulation.",
+        implications: "Protocol design choices during stress events significantly impact user losses."
+      },
+      {
+        id: 9,
+        title: "Derivatives Market Structure Changes",
+        author: "Markets Research",
+        source: "Glassnode",
+        date: "2023-12-25",
+        summary: "Analysis of futures and options market structure changes, including open interest shifts, funding rate behavior, and basis changes.",
+        keyMetrics: ["Open Interest", "Funding Rates", "Basis", "Options Skew"],
+        tags: ["Derivatives", "Trading"],
+        topics: ["Volatility"],
+        thesis: "Perpetual futures funding mechanism showed resilience despite unprecedented volatility.",
+        implications: "Derivatives markets may provide early signals for spot market direction."
+      },
+      {
+        id: 10,
+        title: "Whale Accumulation During Market Bottom",
+        author: "On-Chain Intelligence",
+        source: "Chainalysis",
+        date: "2023-12-22",
+        summary: "Identifies large holder accumulation patterns during market stress, providing insight into investor sentiment at potential price floors.",
+        keyMetrics: ["Whale Holdings", "Accumulation Score", "Dormant Supply", "Exchange Withdrawals"],
+        tags: ["On-Chain", "Market Dynamics"],
+        topics: ["Institutional"],
+        thesis: "Addresses holding 1000+ BTC increased accumulation by 23% during the crash.",
+        implications: "Large holder confidence suggests belief in long-term value proposition."
+      },
+      {
+        id: 11,
+        title: "Stablecoin Depegging Risk Assessment",
+        author: "Risk Analysis Team",
+        source: "Messari",
+        date: "2023-12-20",
+        summary: "Comprehensive risk assessment of major stablecoins during market stress, examining reserve compositions and redemption mechanisms.",
+        keyMetrics: ["Peg Deviation", "Reserve Composition", "Redemption Volume", "Market Depth"],
+        tags: ["Stablecoins", "Risk"],
+        topics: ["Stablecoins"],
+        thesis: "Algorithmic stablecoins showed 5x higher volatility than fiat-backed alternatives.",
+        implications: "Stablecoin selection impacts portfolio risk during market stress."
+      },
+      {
+        id: 12,
+        title: "Market Recovery Indicators Dashboard",
+        author: "Analytics Department",
+        source: "Glassnode",
+        date: "2023-12-18",
+        summary: "Develops a composite indicator framework for assessing market recovery progress across multiple dimensions.",
+        keyMetrics: ["Recovery Index", "Sentiment Score", "Liquidity Index", "Participation Rate"],
+        tags: ["Market Dynamics", "Indicators"],
+        topics: ["Volatility"],
+        thesis: "Composite recovery indicators show 60% recovery from crisis lows.",
+        implications: "Multi-factor analysis provides more reliable recovery signals than single metrics."
+      }
+    ];
+
+    const blogArticles = [
+      {
+        id: 1,
+        title: "Capital Rotation After the October Crash",
+        category: "analysis",
+        date: "2024-01-14",
+        readTime: "8 min",
+        excerpt: "Examining how capital has rotated between sectors, protocols, and chains in the aftermath of the crisis. The data reveals surprising patterns in investor behavior.",
+        content: `
+          <p>The October crisis triggered one of the most significant capital rotation events in crypto market history. Our analysis of on-chain data reveals distinct patterns that challenge conventional wisdom about crisis-driven market dynamics.</p>
+          
+          <h3>Key Findings</h3>
+          <p>Analysis of wallet movements shows capital initially fleeing to stablecoins, followed by a gradual rotation back into blue-chip DeFi protocols. The velocity of this rotation varied significantly across investor cohorts.</p>
+          
+          <h3>Institutional vs Retail Behavior</h3>
+          <p>Institutional wallets showed markedly different behavior patterns compared to retail. While retail investors largely capitulated, institutional wallets showed net accumulation during the price floor formation period.</p>
+          
+          <h3>Cross-Chain Dynamics</h3>
+          <p>Capital movement between L1 and L2 ecosystems revealed interesting patterns. Ethereum L2s captured a disproportionate share of returning capital, suggesting growing confidence in scaling solutions.</p>
+        `,
+        tags: ["Capital Flows", "Market Dynamics"],
+        citations: [1, 3, 6]
+      },
+      {
+        id: 2,
+        title: "Stablecoin Liquidity and Market Recovery",
+        category: "analysis",
+        date: "2024-01-10",
+        readTime: "6 min",
+        excerpt: "How stablecoin flows predicted the market recovery, and what current patterns suggest about future price action.",
+        content: `
+          <p>Stablecoin metrics served as leading indicators throughout the October crisis and subsequent recovery. Understanding these patterns provides crucial insight for traders and investors.</p>
+          
+          <h3>Exchange Reserve Patterns</h3>
+          <p>Stablecoin exchange reserves peaked during the crisis, indicating sidelined capital ready for deployment. The subsequent decline in reserves correlated with market recovery.</p>
+          
+          <h3>USDT vs USDC Dynamics</h3>
+          <p>The two dominant stablecoins showed divergent flow patterns. USDT absorbed more flight-to-safety volume, while USDC saw greater redemption activity. This divergence has implications for future market structure.</p>
+          
+          <h3>Implications for Trading</h3>
+          <p>Monitoring stablecoin exchange flows provides actionable signals for position timing. Current patterns suggest continued recovery momentum.</p>
+        `,
+        tags: ["Stablecoins", "Trading"],
+        citations: [2, 11]
+      },
+      {
+        id: 3,
+        title: "Research Review: DeFi Protocol Health Assessment",
+        category: "review",
+        date: "2024-01-08",
+        readTime: "5 min",
+        excerpt: "A detailed review of Messari's lending protocol health report, with implications for DeFi investors.",
+        content: `
+          <p>Messari's comprehensive assessment of lending protocol health through the October crisis provides valuable lessons for DeFi participants.</p>
+          
+          <h3>Protocol Resilience Findings</h3>
+          <p>Protocols with dynamic collateral factor adjustments and robust liquidation mechanisms avoided significant bad debt accumulation. Aave and Compound demonstrated particular resilience.</p>
+          
+          <h3>Key Takeaways</h3>
+          <p>The research highlights that protocol design choices made during calm periods significantly impact outcomes during stress events. Users should consider these factors when selecting platforms.</p>
+        `,
+        tags: ["DeFi", "Research Review"],
+        citations: [8]
+      },
+      {
+        id: 4,
+        title: "Institutional Trading Patterns After the Crisis",
+        category: "analysis",
+        date: "2024-01-05",
+        readTime: "7 min",
+        excerpt: "New data reveals how institutional investors navigated the crisis and what it means for market structure.",
+        content: `
+          <p>Chainalysis institutional flow data provides unprecedented visibility into how large investors responded to the October crisis.</p>
+          
+          <h3>Divergent Institutional Responses</h3>
+          <p>Institutional investors showed varied responses: 40% reduced exposure, 25% increased positions, and 35% maintained existing allocations. This divergence created unique market dynamics.</p>
+          
+          <h3>Custody vs Exchange Flows</h3>
+          <p>Institutional movements between custodial solutions and exchanges revealed strategic positioning. Exchange inflows preceded large OTC block trades, suggesting coordinated accumulation.</p>
+        `,
+        tags: ["Institutional", "Trading"],
+        citations: [3, 10]
+      },
+      {
+        id: 5,
+        title: "Data Insight: Exchange Reserve Anomalies",
+        category: "data",
+        date: "2024-01-03",
+        readTime: "4 min",
+        excerpt: "Nansen data reveals unusual exchange reserve patterns that may signal upcoming volatility.",
+        content: `
+          <p>Exchange reserve metrics tracked by Nansen show anomalous patterns that warrant attention from market participants.</p>
+          
+          <h3>Key Observations</h3>
+          <p>Bitcoin exchange reserves have declined to 18-month lows, while Ethereum reserves show a different pattern. This divergence has implications for price discovery.</p>
+          
+          <h3>Historical Context</h3>
+          <p>Previous instances of similar reserve patterns preceded significant price movements. However, the current market structure differs in important ways.</p>
+        `,
+        tags: ["Data", "Exchanges"],
+        citations: [4]
+      },
+      {
+        id: 6,
+        title: "DeFi Liquidity Cycles in the Post-Crash Market",
+        category: "analysis",
+        date: "2023-12-28",
+        readTime: "9 min",
+        excerpt: "Understanding how liquidity returns to DeFi protocols after a major market dislocation.",
+        content: `
+          <p>The recovery of DeFi liquidity following the October crash follows predictable patterns that traders can leverage.</p>
+          
+          <h3>Liquidity Recovery Phases</h3>
+          <p>Analysis shows liquidity returns in distinct phases: stablecoin liquidity returns first, followed by major pairs, then long-tail assets. Understanding these phases helps optimize trading strategies.</p>
+          
+          <h3>Protocol-Specific Patterns</h3>
+          <p>Different DEX and lending protocols show varying recovery speeds. Factors influencing recovery include incentive structures, user interface quality, and protocol reputation.</p>
+        `,
+        tags: ["DeFi", "Liquidity"],
+        citations: [1, 6, 8]
+      }
+    ];
+
+    const trends = [
+      {
+        title: "DeFi Liquidity Concentration",
+        description: "Liquidity is concentrating in top-tier protocols with proven track records",
+        growth: "+23%",
+        confidence: 92,
+        papers: 47
+      },
+      {
+        title: "Cross-Chain Bridge Activity",
+        description: "Increased bridge usage suggests capital seeking yield across ecosystems",
+        growth: "+67%",
+        confidence: 88,
+        papers: 23
+      },
+      {
+        title: "Stablecoin Diversification",
+        description: "Growing interest in non-USD stablecoins and alternative pegs",
+        growth: "+15%",
+        confidence: 75,
+        papers: 18
+      },
+      {
+        title: "Institutional Custody Solutions",
+        description: "Migration toward regulated custodial services post-crisis",
+        growth: "+34%",
+        confidence: 85,
+        papers: 31
+      },
+      {
+        title: "L2 Adoption Acceleration",
+        description: "Users migrating to L2s for cost efficiency and security",
+        growth: "+89%",
+        confidence: 91,
+        papers: 28
+      },
+      {
+        title: "Liquid Staking Growth",
+        description: "Liquid staking derivatives gaining traction as yield source",
+        growth: "+45%",
+        confidence: 82,
+        papers: 22
+      }
+    ];
+
+    const sectors = [
+      { name: "DeFi", percentage: 34, color: "var(--accent-primary)" },
+      { name: "Stablecoins", percentage: 22, color: "var(--accent-secondary)" },
+      { name: "Institutional", percentage: 18, color: "var(--accent-warning)" },
+      { name: "Exchanges", percentage: 15, color: "#a855f7" },
+      { name: "Derivatives", percentage: 11, color: "var(--accent-danger)" }
+    ];
+
+    const topics = [
+      { name: "DeFi Recovery", count: 47, tag: "tag-defi" },
+      { name: "Stablecoin Flows", count: 38, tag: "tag-stablecoin" },
+      { name: "Institutional Activity", count: 31, tag: "tag-institutional" },
+      { name: "Exchange Reserves", count: 28, tag: "tag-exchange" },
+      { name: "Volatility Analysis", count: 24, tag: "tag-volatility" },
+      { name: "Liquidity Dynamics", count: 22, tag: "tag-defi" },
+      { name: "Cross-Chain", count: 19, tag: "tag-defi" },
+      { name: "Smart Money", count: 17, tag: "tag-institutional" }
+    ];
+
+    // ============================================
+    // STATE MANAGEMENT
+    // ============================================
+
+    let currentPage = 'home';
+    let currentCategory = 'all';
+
+    // ============================================
+    // NAVIGATION
+    // ============================================
+
+    function navigate(page) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('active');
+      });
+      
+      // Update nav links
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.dataset.nav === page) {
+          link.classList.add('active');
+        }
+      });
+      
+      // Show target page
+      const targetPage = document.getElementById(`page-${page}`);
+      if (targetPage) {
+        targetPage.classList.add('active');
+        currentPage = page;
+        
+        // Trigger stagger animations
+        setTimeout(() => {
+          targetPage.querySelectorAll('.stagger-item').forEach((item, i) => {
+            setTimeout(() => item.classList.add('visible'), i * 100);
+          });
+        }, 100);
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Animate metrics if home page
+        if (page === 'home') {
+          animateMetrics();
+        }
+      }
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById('mobileMenu').classList.toggle('active');
+    }
+
+    // ============================================
+    // SEARCH
+    // ============================================
+
+    function openSearch() {
+      document.getElementById('searchOverlay').classList.add('active');
+      document.getElementById('searchModal').classList.add('active');
+      document.getElementById('globalSearch').focus();
+    }
+
+    function closeSearch() {
+      document.getElementById('searchOverlay').classList.remove('active');
+      document.getElementById('searchModal').classList.remove('active');
+    }
+
+    function performSearch(query) {
+      if (!query.trim()) {
+        document.getElementById('searchResults').innerHTML = '<p class="text-[var(--text-muted)] text-sm py-8 text-center">Enter a search query to find relevant research</p>';
+        return;
+      }
+
+      const results = researchPapers.filter(paper => {
+        const searchText = `${paper.title} ${paper.summary} ${paper.tags.join(' ')} ${paper.topics.join(' ')}`.toLowerCase();
+        return searchText.includes(query.toLowerCase());
+      });
+
+      const resultsHtml = results.length > 0 
+        ? results.slice(0, 5).map(paper => `
+            <div class="search-result p-3 rounded-lg cursor-pointer" onclick="openPaperModal(${paper.id}); closeSearch();">
+              <div class="font-medium mb-1">${paper.title}</div>
+              <div class="text-sm text-[var(--text-muted)]">${paper.source} - ${paper.date}</div>
+            </div>
+          `).join('')
+        : '<p class="text-[var(--text-muted)] text-sm py-8 text-center">No results found</p>';
+
+      document.getElementById('searchResults').innerHTML = resultsHtml;
+    }
+
+    // ============================================
+    // PAPER FILTERING
+    // ============================================
+
+    function filterPapers() {
+      const searchQuery = document.getElementById('paperSearch').value.toLowerCase();
+      const sourceFilter = document.getElementById('filterSource').value;
+      const topicFilter = document.getElementById('filterTopic').value;
+      const dateFilter = document.getElementById('filterDate').value;
+
+      let filtered = researchPapers.filter(paper => {
+        // Search filter
+        if (searchQuery) {
+          const searchText = `${paper.title} ${paper.summary} ${paper.tags.join(' ')}`.toLowerCase();
+          if (!searchText.includes(searchQuery)) return false;
+        }
+
+        // Source filter
+        if (sourceFilter && paper.source !== sourceFilter) return false;
+
+        // Topic filter
+        if (topicFilter && !paper.topics.includes(topicFilter)) return false;
+
+        // Date filter
+        if (dateFilter) {
+          const paperDate = new Date(paper.date);
+          const cutoffDate = new Date();
+          cutoffDate.setDate(cutoffDate.getDate() - parseInt(dateFilter));
+          if (paperDate < cutoffDate) return false;
+        }
+
+        return true;
+      });
+
+      renderPapers(filtered);
+    }
+
+    function renderPapers(papers) {
+      const container = document.getElementById('paperResults');
+      const noResults = document.getElementById('noResults');
+
+      if (papers.length === 0) {
+        container.innerHTML = '';
+        noResults.classList.remove('hidden');
+        return;
+      }
+
+      noResults.classList.add('hidden');
+      container.innerHTML = papers.map(paper => `
+        <div class="card p-6 cursor-pointer" onclick="openPaperModal(${paper.id})">
+          <div class="flex items-start justify-between gap-4 mb-3">
+            <h3 class="font-display font-bold text-lg">${paper.title}</h3>
+            <span class="text-xs text-[var(--text-muted)] whitespace-nowrap">${paper.date}</span>
+          </div>
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-sm text-[var(--accent-primary)]">${paper.source}</span>
+            <span class="text-[var(--text-muted)]">|</span>
+            <span class="text-sm text-[var(--text-secondary)]">${paper.author}</span>
+          </div>
+          <p class="text-[var(--text-secondary)] text-sm mb-4 line-clamp-2">${paper.summary}</p>
+          <div class="flex flex-wrap gap-2">
+            ${paper.tags.map(tag => {
+              const tagClass = getTagClass(tag);
+              return `<span class="tag ${tagClass}">${tag}</span>`;
+            }).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getTagClass(tag) {
+      const tagLower = tag.toLowerCase();
+      if (tagLower.includes('defi') || tagLower.includes('liquidity')) return 'tag-defi';
+      if (tagLower.includes('stablecoin')) return 'tag-stablecoin';
+      if (tagLower.includes('institutional')) return 'tag-institutional';
+      if (tagLower.includes('exchange')) return 'tag-exchange';
+      if (tagLower.includes('volatility')) return 'tag-volatility';
+      return 'tag-defi';
+    }
+
+    // ============================================
+    // MODALS
+    // ============================================
+
+    function openPaperModal(id) {
+      const paper = researchPapers.find(p => p.id === id);
+      if (!paper) return;
+
+      document.getElementById('paperModalContent').innerHTML = `
+        <div class="flex items-center justify-between mb-6">
+          <span class="text-[var(--accent-primary)] text-sm font-medium">${paper.source}</span>
+          <button onclick="closePaperModal()" class="p-2 hover:bg-[var(--bg-elevated)] rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <h2 class="font-display text-2xl font-bold mb-4">${paper.title}</h2>
+        <div class="flex items-center gap-4 mb-6 text-sm text-[var(--text-muted)]">
+          <span>${paper.author}</span>
+          <span>${paper.date}</span>
+        </div>
+        <div class="mb-6">
+          <h4 class="text-xs uppercase tracking-wider text-[var(--text-muted)] mb-2">AI-Generated Summary</h4>
+          <p class="text-[var(--text-secondary)]">${paper.summary}</p>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4 mb-6">
+          <div class="bg-[var(--bg-secondary)] rounded-lg p-4">
+            <h4 class="text-xs uppercase tracking-wider text-[var(--text-muted)] mb-2">Key Thesis</h4>
+            <p class="text-sm">${paper.thesis}</p>
+          </div>
+          <div class="bg-[var(--bg-secondary)] rounded-lg p-4">
+            <h4 class="text-xs uppercase tracking-wider text-[var(--text-muted)] mb-2">Market Implications</h4>
+            <p class="text-sm">${paper.implications}</p>
+          </div>
+        </div>
+        <div class="mb-6">
+          <h4 class="text-xs uppercase tracking-wider text-[var(--text-muted)] mb-2">Key Metrics Discussed</h4>
+          <div class="flex flex-wrap gap-2">
+            ${paper.keyMetrics.map(m => `<span class="px-3 py-1 bg-[var(--bg-elevated)] rounded-full text-sm">${m}</span>`).join('')}
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase tracking-wider text-[var(--text-muted)] mb-2">Topics</h4>
+          <div class="flex flex-wrap gap-2">
+            ${paper.tags.map(tag => `<span class="tag ${getTagClass(tag)}">${tag}</span>`).join('')}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('paperOverlay').classList.add('active');
+      document.getElementById('paperModal').classList.add('active');
+    }
+
+    function closePaperModal() {
+      document.getElementById('paperOverlay').classList.remove('active');
+      document.getElementById('paperModal').classList.remove('active');
+    }
+
+    function openArticleModal(id) {
+      const article = blogArticles.find(a => a.id === id);
+      if (!article) return;
+
+      document.getElementById('articleModalContent').innerHTML = `
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-3">
+            <span class="tag tag-defi">${article.category}</span>
+            <span class="text-sm text-[var(--text-muted)]">${article.readTime} read</span>
+          </div>
+          <button onclick="closeArticleModal()" class="p-2 hover:bg-[var(--bg-elevated)] rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <h2 class="font-display text-2xl font-bold mb-4">${article.title}</h2>
+        <div class="text-sm text-[var(--text-muted)] mb-6">${article.date}</div>
+        <div class="prose prose-invert max-w-none mb-6">
+          ${article.content}
+        </div>
+        <div class="border-t border-[var(--border-color)] pt-4">
+          <h4 class="text-xs uppercase tracking-wider text-[var(--text-muted)] mb-2">Research Citations</h4>
+          <div class="space-y-2">
+            ${article.citations.map(citeId => {
+              const citedPaper = researchPapers.find(p => p.id === citeId);
+              return citedPaper ? `
+                <div class="flex items-center gap-2 text-sm">
+                  <svg class="w-4 h-4 text-[var(--accent-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  <span>${citedPaper.title}</span>
+                  <span class="text-[var(--text-muted)]">- ${citedPaper.source}</span>
+                </div>
+              ` : '';
+            }).join('')}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('articleOverlay').classList.add('active');
+      document.getElementById('articleModal').classList.add('active');
+    }
+
+    function closeArticleModal() {
+      document.getElementById('articleOverlay').classList.remove('active');
+      document.getElementById('articleModal').classList.remove('active');
+    }
+
+    // ============================================
+    // BLOG FILTERING
+    // ============================================
+
+    function filterBlog(category) {
+      currentCategory = category;
+      
+      // Update buttons
+      document.querySelectorAll('.category-tab').forEach(btn => {
+        if (btn.dataset.category === category) {
+          btn.className = 'category-tab btn-primary text-sm';
+        } else {
+          btn.className = 'category-tab btn-secondary text-sm';
+        }
+      });
+
+      // Filter articles
+      const filtered = category === 'all' 
+        ? blogArticles 
+        : blogArticles.filter(a => a.category === category);
+
+      renderBlog(filtered);
+    }
+
+    function renderBlog(articles) {
+      const container = document.getElementById('blogGrid');
+      container.innerHTML = articles.map(article => `
+        <div class="card p-6 cursor-pointer" onclick="openArticleModal(${article.id})">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="tag ${article.category === 'analysis' ? 'tag-defi' : article.category === 'review' ? 'tag-institutional' : 'tag-stablecoin'}">${article.category}</span>
+            <span class="text-xs text-[var(--text-muted)]">${article.readTime}</span>
+          </div>
+          <h3 class="font-display font-bold text-lg mb-2">${article.title}</h3>
+          <p class="text-[var(--text-secondary)] text-sm mb-4 line-clamp-2">${article.excerpt}</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-[var(--text-muted)]">${article.date}</span>
+            <div class="flex gap-2">
+              ${article.tags.slice(0, 2).map(tag => `<span class="text-xs text-[var(--accent-primary)]">${tag}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ============================================
+    // RENDER FUNCTIONS
+    // ============================================
+
+    function renderFeaturedResearch() {
+      const container = document.getElementById('featuredResearch');
+      const featured = researchPapers.slice(0, 6);
+      
+      container.innerHTML = featured.map(paper => `
+        <div class="card p-6 cursor-pointer stagger-item" onclick="openPaperModal(${paper.id})">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xs text-[var(--accent-primary)] font-medium">${paper.source}</span>
+            <span class="text-xs text-[var(--text-muted)]">${paper.date}</span>
+          </div>
+          <h3 class="font-display font-bold mb-3">${paper.title}</h3>
+          <p class="text-[var(--text-secondary)] text-sm line-clamp-2 mb-4">${paper.summary}</p>
+          <div class="flex flex-wrap gap-2">
+            ${paper.tags.slice(0, 2).map(tag => `<span class="tag ${getTagClass(tag)}">${tag}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderLatestArticles() {
+      const container = document.getElementById('latestArticles');
+      const latest = blogArticles.slice(0, 4);
+      
+      container.innerHTML = latest.map(article => `
+        <div class="card p-6 cursor-pointer stagger-item" onclick="openArticleModal(${article.id})">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="tag ${article.category === 'analysis' ? 'tag-defi' : 'tag-institutional'}">${article.category}</span>
+            <span class="text-xs text-[var(--text-muted)]">${article.readTime}</span>
+          </div>
+          <h3 class="font-display font-bold text-xl mb-3">${article.title}</h3>
+          <p class="text-[var(--text-secondary)] mb-4">${article.excerpt}</p>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-[var(--text-muted)]">${article.date}</span>
+            <span class="text-sm text-[var(--accent-primary)]">Read article</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderTopicCloud() {
+      const container = document.getElementById('topicCloud');
+      container.innerHTML = topics.map(topic => `
+        <div class="px-4 py-2 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] cursor-pointer hover:border-[var(--accent-primary)] transition-colors">
+          <span class="text-sm">${topic.name}</span>
+          <span class="text-xs text-[var(--text-muted)] ml-1">${topic.count}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderVolumeChart() {
+      const container = document.getElementById('volumeChart');
+      const data = [8, 12, 15, 11, 18, 14, 22, 19, 24, 20, 28, 25, 32, 27, 35, 30, 38, 33, 42, 38];
+      
+      container.innerHTML = data.map((val, i) => `
+        <div class="chart-bar flex-1 rounded-t" 
+             style="height: ${val * 2.5}px; background: linear-gradient(to top, var(--accent-primary), var(--accent-secondary)); opacity: ${0.5 + (i / data.length) * 0.5}; animation-delay: ${i * 50}ms;">
+        </div>
+      `).join('');
+    }
+
+    function renderSectorChart() {
+      const container = document.getElementById('sectorChart');
+      container.innerHTML = sectors.map(sector => `
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span>${sector.name}</span>
+            <span class="text-[var(--text-muted)]">${sector.percentage}%</span>
+          </div>
+          <div class="h-2 bg-[var(--bg-secondary)] rounded-full overflow-hidden">
+            <div class="h-full rounded-full transition-all duration-1000" style="width: ${sector.percentage}%; background: ${sector.color};"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderTrends() {
+      const container = document.getElementById('detectedTrends');
+      container.innerHTML = trends.map(trend => `
+        <div class="bg-[var(--bg-secondary)] rounded-lg p-4 border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-colors">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-medium text-sm">${trend.title}</h4>
+            <span class="text-xs px-2 py-1 rounded-full bg-[rgba(0,212,170,0.15)] text-[var(--accent-primary)]">${trend.growth}</span>
+          </div>
+          <p class="text-xs text-[var(--text-secondary)] mb-3">${trend.description}</p>
+          <div class="flex items-center justify-between text-xs text-[var(--text-muted)]">
+            <span>${trend.papers} papers</span>
+            <span>${trend.confidence}% confidence</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderRecentInsights() {
+      const container = document.getElementById('recentInsights');
+      const insights = [
+        {
+          title: "Exchange Net Flows Turning Positive",
+          metric: "+$2.3B",
+          description: "First positive net flow week since October crisis",
+          trend: "up"
+        },
+        {
+          title: "Stablecoin Exchange Supply Ratio",
+          metric: "0.42",
+          description: "Approaching pre-crisis levels, suggesting recovery",
+          trend: "up"
+        },
+        {
+          title: "Whale Accumulation Score",
+          metric: "78/100",
+          description: "Large holders continuing to accumulate at current levels",
+          trend: "up"
+        },
+        {
+          title: "DeFi TVL Recovery Index",
+          metric: "64%",
+          description: "TVL recovered to 64% of pre-crisis levels",
+          trend: "up"
+        }
+      ];
+
+      container.innerHTML = insights.map(insight => `
+        <div class="card p-6">
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="font-medium">${insight.title}</h4>
+            <div class="flex items-center gap-1 text-[var(--accent-primary)]">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+              </svg>
+            </div>
+          </div>
+          <div class="text-3xl font-display font-bold mb-2">${insight.metric}</div>
+          <p class="text-sm text-[var(--text-secondary)]">${insight.description}</p>
+        </div>
+      `).join('');
+    }
+
+    // ============================================
+    // ANIMATIONS
+    // ============================================
+
+    function animateMetrics() {
+      document.querySelectorAll('.metric-value').forEach(el => {
+        const target = parseInt(el.dataset.count);
+        const duration = 1500;
+        const start = performance.now();
+        
+        function update(currentTime) {
+          const elapsed = currentTime - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(eased * target);
+          el.textContent = current.toLocaleString();
+          
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          }
+        }
+        
+        requestAnimationFrame(update);
+      });
+    }
+
+    // ============================================
+    // SCROLL REVEAL
+    // ============================================
+
+    function initScrollReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.stagger-item').forEach(item => {
+        observer.observe(item);
+      });
+    }
+
+    // ============================================
+    // EVENT LISTENERS
+    // ============================================
+
+    function initEventListeners() {
+      // Global search
+      document.getElementById('globalSearch').addEventListener('input', (e) => {
+        performSearch(e.target.value);
+      });
+
+      // Paper filters
+      document.getElementById('paperSearch').addEventListener('input', filterPapers);
+      document.getElementById('filterSource').addEventListener('change', filterPapers);
+      document.getElementById('filterTopic').addEventListener('change', filterPapers);
+      document.getElementById('filterDate').addEventListener('change', filterPapers);
+
+      // Category tabs
+      document.querySelectorAll('.category-tab').forEach(btn => {
+        btn.addEventListener('click', () => filterBlog(btn.dataset.category));
+      });
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeSearch();
+          closePaperModal();
+          closeArticleModal();
+        }
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          openSearch();
+        }
+      });
+    }
+
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+
+    function init() {
+      // Render all sections
+      renderFeaturedResearch();
+      renderLatestArticles();
+      renderTopicCloud();
+      renderVolumeChart();
+      renderSectorChart();
+      renderTrends();
+      renderRecentInsights();
+      renderPapers(researchPapers);
+      renderBlog(blogArticles);
+
+      // Initialize interactions
+      initEventListeners();
+      initScrollReveal();
+
+      // Initial animations
+      setTimeout(() => {
+        document.querySelectorAll('#page-home .stagger-item').forEach((item, i) => {
+          setTimeout(() => item.classList.add('visible'), i * 100);
+        });
+        animateMetrics();
+      }, 100);
+    }
+
+    // Run on DOM ready
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
